@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block style %}
+a {
+    text-decoration: none;
+    color: #0077b6;    
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: 600px 40px;
+    grid-gap: 20px;
+    padding: 0px;
+  }
+  
+  .grid-container > div {
+    text-align: left;
+    padding: 5px 20px;
+    font-size: 20px;    
+  }
+{% endblock %}
+{% block body %}
+   
+    <h2>Watchlist</h2>
+    <hr>
+    {% if message != "" %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>                       
+    {% endif %} 
+    <div class="grid-container">
+        {% for item in watchlist %}
+            <div>
+            <a href="{% url 'delete_from_watchlist' item.id %}"><img src="{% static "auctions/remove.png" %}" height="25" width="20"></a> 
+             <a href="{% url 'listing' item.id %}">{{item}}<a/> 
+            </div>     
+            {% empty %}             
+            <div class="alert alert-warning" role="alert">No listing added</div>             
+        {% endfor %}
+    <div>
+{% endblock  %}

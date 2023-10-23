@@ -1,0 +1,88 @@
+{% extends "auctions/layout.html" %}
+{% block style %}
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+  html,
+body {
+  height: 100%;
+}
+
+
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+{% endblock %}
+{% block body %}
+   
+<main class="form-signin">
+    {% if message %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal">Please Register</h1>
+        <div class="form-floating">
+            <input class="form-control" autofocus type="text" name="username" id="floatingInput1" placeholder="Username">
+            <label for="floatingInput1">Username</label>
+        </div>
+        <div class="form-floating">
+            <input class="form-control" type="email" name="email" id="floatingInput2" placeholder="Email Address">
+            <label for="floatingInput2">Email Address</label>
+        </div>
+        <div class="form-floating">
+            <input class="form-control" type="password" name="password" id="floatingInput3" placeholder="Password">
+            <label for="floatingInput3">Password</label>
+        </div>
+        <div class="form-floating">
+            <input class="form-control" type="password" name="confirmation" id="floatingInput4" placeholder="Confirm Password">
+            <label for="floatingInput4">Confirm Password</label>
+        </div>
+        <div class="form-floating">
+            <input class="form-control" type="text" name="phone_number" id="floatingInput5" placeholder="Phone Number">
+            <label for="floatingInput5">Phone Number</label>
+        </div><br>
+        <input class="w-100 btn btn-lg btn-primary" type="submit" value="Register">
+    </form>
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+</main>
+    
+
+{% endblock %}

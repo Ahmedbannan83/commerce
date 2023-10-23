@@ -1,0 +1,84 @@
+{% extends "auctions/layout.html" %}
+{% block style %}
+a {
+    text-decoration: none;
+    color: #0077b6;
+  }
+{% endblock %}
+{% block body %}
+
+
+    <div class="card mb-5" width="800" height="800">
+        <div class="row">
+            <div class="col-md-4">
+                {% if listing.image_url %}
+                    <img src="{{ listing.image_url }}" class="img-fluid rounded-start">          
+                {% else %}
+                    <img src="https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725020-stock-illustration-image-available-icon-flat-vector.jpg" class="img-fluid rounded-start">
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <div class="card-body d-inline-block">
+                    <h1 class="card-title">{{listing}}</h1>
+                    <p>{{listing.description}}</p>                    
+                    {% if listing.status %}
+                        <p><strong>Status :</strong>  Active</p>
+                    {% else %}
+                        <p><strong>Status :</strong> Closed</p>
+                    {% endif %}                  
+                    <p><strong>Created by </strong> {{listing.user}} at {{listing.created_date}}</p>
+                    <p><strong>Category :</strong> {{listing.category}}</p>
+                    <p><strong>Image's URL :</strong> {{listing.image_url}}</p>
+                    <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <p><strong>Start Bid :</strong> {{listing.start_bid}} DH</p>
+                        <div class="alert alert-success" role="alert">
+                            Current Bid : <strong> {{max_bid}} DH,</strong>By :<strong>{{max_bid_user}}</strong> 
+                        </div>
+                        {% if listing.status %} 
+                                <div class="alert alert-info" role="alert">
+                                    <p class="card-text"><small class="text-muted">To participate in the bidding, you can enter your desired amount and then click on the "Place Bid" button.</small></p>
+                                </div>
+                                {% if bid_message != "" %}
+                                    <div class="alert alert-warning" role="alert">{{bid_message}}</div>                       
+                                {% endif %}                                            
+                                <p><input type="number" name='bid'  placeholder="Entre your amount">
+                                <input type="submit" value="Place Bid" class="w-10 btn btn-sm btn-primary "></p>                                
+                        {% endif %}    
+                        <p>Bids for current listing:</p>
+                        <ul>
+                            {% for bid in listing.bids.all  %}                                
+                                    <li>{{bid}} by : <strong>{{bid.user}}</strong> </li>
+                                    {% empty %}
+                                    <li>No Bids </li>         
+                            {% endfor %}                            
+                        </ul> 
+                    </form>
+                    {% if request.user.username == listing.user %}                        
+                            {% if listing.status %}
+                                <a href="{% url 'change_status' listing.id %}"><p><strong><button class="w-10 btn btn-sm btn-primary"> Close Listing </button></strong></p></a>                              
+                            {% else %} 
+                                <a href="{% url 'change_status' listing.id %}"><p><strong><button class="w-10 btn btn-sm btn-primary"> Open Listing </button></strong></p></a>                              
+                            {% endif%}
+                        
+                    {% endif %}
+                    <form action="{% url 'watchlist' %}" method='post'>
+                        {% csrf_token %}
+                        <input name='id_listing' value={{listing.id}} hidden>
+                        <button class="w-10 btn btn-sm btn-primary">Add the current listing to WathList</button>
+                    </form>
+                    
+                    {% if not listing.status %}
+                        {% if max_bid_user == request.user.username %}
+                            <div class="alert alert-success" role="alert">
+                                Congratulations on winning the auction! 
+                            </div>
+                        {% endif %}
+                    
+                    {% endif %}
+
+                </div> 
+            <div>         
+        </div>
+    </div>
+{% endblock %}
