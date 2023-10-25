@@ -34,6 +34,7 @@ class Listing(models.Model):
     created_date=models.DateField(auto_now=True)
     image_url = models.URLField(blank=True, null=True)
     user = models.CharField(max_length=100,blank=True,null=True)
+    winner_user = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return f"{self.title}"
@@ -44,3 +45,8 @@ class Watchlist(models.Model):
 
     def __str__(self):
         return f"Watchlist of {self.user}"  
+    
+class Comment(models.Model):
+    comment = models.TextField(max_length=500)    
+    user = models.CharField(max_length=100,blank=True,null=True)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE,blank=True,null=True)

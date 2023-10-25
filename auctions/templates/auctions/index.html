@@ -6,31 +6,42 @@ a {
   }
 {% endblock %}
 {% block body %}
-    <h2>{{ message }}</h2>
+
+{% for lis in closed_listings %}
+    {% if request.user.username == lis.winner_user %}
     
+        <div class="alert alert-info alert-dismissible" role="alert">
+            Congratulations on winning the auction: <strong>{{lis}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+       
+    {% endif %}
+{% endfor %}
+
+    
+    <h2>{{ message }}</h2>    
     <div class="container text-center " > 
         <div class="row row-cols-5">
         {% for list in listings %} 
-                      
+           {% if list.status%}           
             <div class="col shadow" style="margin:5px; padding:15px;">
                 <a href="{% url 'listing' list.id %}">   
-                {% if list.image_url %}
-                    <img src="{{ list.image_url }}" width="150" height="100">
-                {% else %}
-                 <img src="https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725020-stock-illustration-image-available-icon-flat-vector.jpg" width="150" height="100">
-                {% endif %}
-                <h3>{{list}}</h3>
-                <p>{{list.description}}</p>
-                <p>Curent Price : {{list.start_bid}} DH</p>
-                {% if list.status %}
-                    <p>Status :  Active</p>
-                {% else %}
-                    <p>Status : Closed</p>
-                {% endif %}
-            </a>                    
+                    {% if list.image_url %}
+                        <img src="{{ list.image_url }}" width="150" height="100">
+                    {% else %}
+                        <img src="https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725020-stock-illustration-image-available-icon-flat-vector.jpg" width="150" height="100">
+                    {% endif %}
+                    <h3>{{list}}</h3>
+                    <p>{{list.description}}</p>
+                    <p>Curent Price : {{list.start_bid}} DH</p>                
+                </a>                    
             </div>
+            
+           {% endif %} 
             {% empty %} 
-            No listing               
+            No listing  
         {% endfor %} 
         </div>       
     </div>

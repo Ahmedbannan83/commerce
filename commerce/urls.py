@@ -29,7 +29,7 @@ urlpatterns = [
 ]
 
 
-admin.site.site_header="Linac Check Adminstrations"
-admin.site.site_title="Linac Check"
-admin.site.index_title="Linac Check"
+admin.site.site_header="Auctions Adminstrations"
+admin.site.site_title="Auctions"
+admin.site.index_title="Auctions"
 admin.site.index_template="auctions/custom_admin_index.html"
